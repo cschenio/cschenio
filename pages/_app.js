@@ -1,9 +1,12 @@
-import React from "react";
-import "@fontsource/advent-pro/200.css";
-import "@fontsource/dm-sans/400.css";
+import React, { useState } from "react";
+import Head from "next/head";
 import { extendTheme } from "@chakra-ui/react";
 import { ChakraProvider } from "@chakra-ui/react";
+import Nav from "../components/Nav";
+import "@fontsource/advent-pro/300.css";
+import "@fontsource/dm-sans/400.css";
 import "../styles/globals.css";
+import styles from "../styles/Layout.module.css";
 
 const colors = {
   // Maya blue: #59BFFF (close to 300)
@@ -50,7 +53,7 @@ const colors = {
   },
 };
 
-const theme = extendTheme({
+const themeConfig = {
   colors,
   fonts: {
     heading: "DM Sans, Microsoft JhengHei, sans-serif",
@@ -58,6 +61,23 @@ const theme = extendTheme({
   },
   styles: {
     global: {
+      h1: {
+        color: "primary.brand",
+        fontFamily: "Advent Pro, Microsoft JhengHei, sans-serif",
+      },
+      nav: {
+        fontFamily: "Advent Pro, Microsoft JhengHei, sans-serif",
+      },
+
+    },
+  },
+};
+
+const darkThemeConfig = {
+  ...themeConfig,
+  styles: {
+    global: {
+      ...themeConfig.styles.global,
       "html, body": {
         background:
           `linear-gradient(90deg, #181818 1px, transparent 1px) 1px 0,
@@ -67,13 +87,6 @@ const theme = extendTheme({
         color: "white",
         lineHeight: "tall",
       },
-      h1: {
-        color: "primary.brand",
-        fontFamily: "Advent Pro, Microsoft JhengHei, sans-serif",
-      },
-      nav: {
-        fontFamily: "Advent Pro, Microsoft JhengHei, sans-serif",
-      },
       a: {
         color: "white",
       },
@@ -82,11 +95,48 @@ const theme = extendTheme({
       },
     },
   },
-});
+};
+
+const lightThemeConfig = {
+  ...themeConfig,
+  styles: {
+    global: {
+      ...themeConfig.styles.global,
+      "html, body": {
+        background:
+          `linear-gradient(90deg, #f9f9f9 1px, transparent 1px) 1px 0,
+          linear-gradient(0deg, #f9f9f9 1px, transparent 1px) 1px 0,
+          #fff;`,
+        backgroundSize: "20px 20px;",
+        color: "black",
+        lineHeight: "tall",
+      },
+      a: {
+        color: "black",
+      },
+      "a:hover": {
+        color: "third.brand",
+      },
+    },
+  },
+};
 
 function MyApp({ Component, pageProps }) {
+  const [darkMode, setDarkMode] = useState(true);
+  const theme =  darkMode ? extendTheme(darkThemeConfig) : extendTheme(lightThemeConfig);
   return <ChakraProvider theme={theme}>
-    <Component {...pageProps} />
+    <div className={styles.container}>
+      <Head>
+        <title>陳家陞 CHEN, CHIA-SHENG</title>
+        <meta name="description" content="陳家陞 CHEN, CHIA-SHENG" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <main className={styles.main}>
+        <Nav darkMode={darkMode} setDarkMode={setDarkMode} />
+        <Component {...pageProps} />
+      </main>
+    </div>
   </ChakraProvider>;
 }
 
