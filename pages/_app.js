@@ -68,7 +68,6 @@ const themeConfig = {
       nav: {
         fontFamily: "Advent Pro, Microsoft JhengHei, sans-serif",
       },
-
     },
   },
 };
@@ -122,7 +121,7 @@ const lightThemeConfig = {
 };
 
 function MyApp({ Component, pageProps }) {
-  const [darkMode, setDarkMode] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
   const theme =  darkMode ? extendTheme(darkThemeConfig) : extendTheme(lightThemeConfig);
   return <ChakraProvider theme={theme}>
     <div className={styles.container}>
